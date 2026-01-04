@@ -37,7 +37,7 @@ async def send_actions(host: str, port: int, player_id: str, actions: Iterable[M
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run Shiz and Giggles lightweight client")
+    parser = argparse.ArgumentParser(description="Run Shits and Giggles lightweight client")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--player-id", default="client")

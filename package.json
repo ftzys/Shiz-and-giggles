@@ -1,7 +1,7 @@
 {
-  "name": "shiz-and-giggles-netcode",
+  "name": "shits-and-giggles-netcode",
   "version": "0.1.0",
-  "description": "Authoritative server and client prediction scaffolding for a 16-player session.",
+  "description": "Authoritative server and client prediction scaffolding for a 16-player Shits and Giggles session.",
   "main": "src/server/index.js",
   "scripts": {
     "server": "node src/server/index.js",
