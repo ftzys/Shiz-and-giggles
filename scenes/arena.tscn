@@ -1,0 +1,116 @@
+[gd_scene load_steps=4 format=3 uid="uid://arena-world"]
+
+[sub_resource type="Environment" id=1]
+background_mode = 2
+ambient_light_color = Color(0.862745, 0.878431, 0.905882, 1)
+ambient_light_energy = 1.2
+sky_custom_fog_color = Color(0.862745, 0.878431, 0.905882, 1)
+fog_enabled = true
+fog_color = Color(0.862745, 0.878431, 0.905882, 1)
+fog_light_color = Color(1, 0.992157, 0.980392, 1)
+
+[sub_resource type="StandardMaterial3D" id=2]
+albedo_color = Color(0.239216, 0.278431, 0.337255, 1)
+roughness = 0.32
+
+[sub_resource type="StandardMaterial3D" id=3]
+albedo_color = Color(0.309804, 0.34902, 0.411765, 1)
+roughness = 0.2
+emission_enabled = true
+emission = Color(0.0901961, 0.188235, 0.423529, 1)
+emission_energy_multiplier = 0.8
+
+[node name="Arena" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+light_energy = 1.8
+transform = Transform3D(0.840896, -0.496139, 0.218509, 0, 0.401184, 0.915005, -0.541196, -0.770986, 0.333366, 0, 16, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource(1)
+
+[node name="Floor" type="CSGBox3D" parent="."]
+size = Vector3(60, 1.2, 60)
+material = SubResource(2)
+use_collision = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 0)
+
+[node name="CenterPillar" type="CSGBox3D" parent="."]
+size = Vector3(6, 10, 6)
+material = SubResource(3)
+use_collision = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+
+[node name="CoverNorth" type="CSGBox3D" parent="."]
+size = Vector3(12, 3, 2)
+material = SubResource(3)
+use_collision = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -18)
+
+[node name="CoverSouth" type="CSGBox3D" parent="."]
+size = Vector3(12, 3, 2)
+material = SubResource(3)
+use_collision = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 18)
+
+[node name="CoverEast" type="CSGBox3D" parent="."]
+size = Vector3(2, 3, 12)
+material = SubResource(3)
+use_collision = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.5, 0)
+
+[node name="CoverWest" type="CSGBox3D" parent="."]
+size = Vector3(2, 3, 12)
+material = SubResource(3)
+use_collision = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0.5, 0)
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="Spawn1" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1, -20)
+
+[node name="Spawn2" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, -22)
+
+[node name="Spawn3" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -22)
+
+[node name="Spawn4" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, -22)
+
+[node name="Spawn5" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1, -20)
+
+[node name="Spawn6" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 1, -10)
+
+[node name="Spawn7" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 1, 0)
+
+[node name="Spawn8" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 1, 10)
+
+[node name="Spawn9" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1, 20)
+
+[node name="Spawn10" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, 22)
+
+[node name="Spawn11" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 22)
+
+[node name="Spawn12" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 22)
+
+[node name="Spawn13" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1, 20)
+
+[node name="Spawn14" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 1, 10)
+
+[node name="Spawn15" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 1, 0)
+
+[node name="Spawn16" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 1, -10)
