@@ -101,7 +101,7 @@ layout_mode = 0
 offset_left = 334.0
 offset_top = 167.0
 offset_right = 690.0
-offset_bottom = 501.0
+offset_bottom = 620.0
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Menu/Panel"]
 layout_mode = 2
@@ -138,24 +138,79 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Gladiator"
 
-[node name="HostButton" type="Button" parent="UI/Menu/Panel/MarginContainer/VBox"]
+[node name="HostJoinRow" type="HBoxContainer" parent="UI/Menu/Panel/MarginContainer/VBox"]
 layout_mode = 2
-text = "Host new arena"
+theme_override_constants/separation = 8
 
-[node name="JoinBox" type="HBoxContainer" parent="UI/Menu/Panel/MarginContainer/VBox"]
+[node name="HostButton" type="Button" parent="UI/Menu/Panel/MarginContainer/VBox/HostJoinRow"]
+layout_mode = 2
+text = "Host & auto-port forward"
+size_flags_horizontal = 3
+
+[node name="HostHelp" type="Label" parent="UI/Menu/Panel/MarginContainer/VBox/HostJoinRow"]
+layout_mode = 2
+text = "Create a lobby and forward port 8910 when your router supports UPnP."
+size_flags_horizontal = 3
+autowrap_mode = 2
+
+[node name="ServerBrowser" type="VBoxContainer" parent="UI/Menu/Panel/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ServerTitle" type="Label" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser"]
+layout_mode = 2
+text = "Join a multiplayer match"
+theme_override_font_sizes/font_size = 18
+
+[node name="ServerStatus" type="Label" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser"]
+layout_mode = 2
+text = "Active servers will appear below. Refresh to discover lobbies."
+autowrap_mode = 2
+
+[node name="Servers" type="Tree" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser"]
+layout_mode = 2
+columns = 3
+hide_root = true
+column_titles_visible = true
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 200)
+
+[node name="ServerActions" type="HBoxContainer" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser"]
 layout_mode = 2
 
-[node name="JoinLabel" type="Label" parent="UI/Menu/Panel/MarginContainer/VBox/JoinBox"]
+[node name="RefreshButton" type="Button" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser/ServerActions"]
+layout_mode = 2
+text = "Refresh servers"
+size_flags_horizontal = 3
+
+[node name="JoinSelected" type="Button" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser/ServerActions"]
+layout_mode = 2
+text = "Use selected server"
+size_flags_horizontal = 3
+
+[node name="JoinBox" type="HBoxContainer" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser"]
+layout_mode = 2
+
+[node name="JoinLabel" type="Label" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser/JoinBox"]
 layout_mode = 2
 text = "Host"
 size_flags_horizontal = 3
 
-[node name="JoinAddress" type="LineEdit" parent="UI/Menu/Panel/MarginContainer/VBox/JoinBox"]
+[node name="JoinAddress" type="LineEdit" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser/JoinBox"]
 layout_mode = 2
 text = "127.0.0.1"
 size_flags_horizontal = 3
 
-[node name="JoinButton" type="Button" parent="UI/Menu/Panel/MarginContainer/VBox"]
+[node name="JoinPort" type="SpinBox" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser/JoinBox"]
+layout_mode = 2
+min_value = 1.0
+max_value = 65535.0
+step = 1.0
+value = 8910.0
+suffix = "port"
+size_flags_horizontal = 3
+
+[node name="JoinButton" type="Button" parent="UI/Menu/Panel/MarginContainer/VBox/ServerBrowser"]
 layout_mode = 2
 text = "Join match"
 
@@ -163,6 +218,8 @@ text = "Join match"
 layout_mode = 2
 text = "Host a new match or join an existing server."
 autowrap_mode = 2
+
+[node name="ServerListRequest" type="HTTPRequest" parent="."]
 
 [node name="HUD" type="Control" parent="UI"]
 layout_mode = 3
