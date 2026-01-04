@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shiz and Giggles HUD Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="hud">
+    <div class="hud-row">
+      <div class="stat-panel">
+        <div class="label">Health</div>
+        <div class="bar health">
+          <div class="fill" id="health-fill"></div>
+        </div>
+        <div class="value" id="health-value">100</div>
+      </div>
+      <div class="stat-panel">
+        <div class="label">Armor</div>
+        <div class="bar armor">
+          <div class="fill" id="armor-fill"></div>
+        </div>
+        <div class="value" id="armor-value">75</div>
+      </div>
+      <div class="timer" id="match-timer">09:45</div>
+    </div>
+
+    <div class="hud-row second-row">
+      <div class="ammo-block">
+        <div class="label">Ammo</div>
+        <div class="ammo-values"><span id="ammo-current">30</span> / <span id="ammo-reserve">120</span></div>
+      </div>
+      <div class="scoreboard" aria-live="polite">
+        <div class="scoreboard-header">
+          <span>Scoreboard</span>
+          <button id="toggle-scoreboard" type="button">Toggle</button>
+        </div>
+        <table id="scoreboard-table">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>K</th>
+              <th>D</th>
+              <th>Ping</th>
+            </tr>
+          </thead>
+          <tbody id="scoreboard-body"></tbody>
+        </table>
+      </div>
+      <div class="kill-feed" aria-live="polite">
+        <div class="kill-feed-header">Kill Feed</div>
+        <ul id="kill-feed-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="crosshair">
+    <div class="line vertical"></div>
+    <div class="line horizontal"></div>
+  </div>
+
+  <div id="pause-menu" class="hidden" role="dialog" aria-modal="true">
+    <div class="pause-header">
+      <h1>Pause &amp; Settings</h1>
+      <button id="resume-btn" type="button">Resume</button>
+    </div>
+    <div class="pause-body">
+      <section>
+        <h2>Keybinds</h2>
+        <ul id="keybind-list" class="two-column"></ul>
+      </section>
+      <section class="settings-grid">
+        <div>
+          <label for="mouse-sens">Mouse Sensitivity</label>
+          <input type="range" id="mouse-sens" min="0.1" max="2.5" step="0.1" value="1.2" />
+          <span class="reading" id="mouse-sens-reading">1.2</span>
+        </div>
+        <div>
+          <label for="fov">Field of View</label>
+          <input type="range" id="fov" min="60" max="120" step="1" value="100" />
+          <span class="reading" id="fov-reading">100°</span>
+        </div>
+        <div>
+          <label for="audio">Audio Level</label>
+          <input type="range" id="audio" min="0" max="100" step="1" value="72" />
+          <span class="reading" id="audio-reading">72%</span>
+        </div>
+        <div>
+          <label for="network">Network Region</label>
+          <select id="network">
+            <option>Auto</option>
+            <option>NA-East</option>
+            <option>NA-West</option>
+            <option>EU</option>
+            <option>Asia</option>
+            <option>OCE</option>
+          </select>
+        </div>
+        <div>
+          <label for="graphics">Graphics Preset</label>
+          <select id="graphics">
+            <option>Competitive (Low)</option>
+            <option>Balanced (Medium)</option>
+            <option>Cinematic (High)</option>
+          </select>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section id="lobby-panel">
+    <header>
+      <div>
+        <h2>Server Browser</h2>
+        <p>Select a region and server, then ready up.</p>
+      </div>
+      <div class="controls">
+        <label>
+          Region
+          <select id="browser-region">
+            <option>Auto</option>
+            <option>NA-East</option>
+            <option>NA-West</option>
+            <option>EU</option>
+            <option>Asia</option>
+            <option>OCE</option>
+          </select>
+        </label>
+        <label>
+          Mode
+          <select id="browser-mode">
+            <option>FFA</option>
+            <option>Team Deathmatch</option>
+            <option>Control</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <div class="browser-layout">
+      <div class="server-list">
+        <div class="server-list-header">
+          <span>Servers</span>
+          <button id="refresh-servers" type="button">Refresh</button>
+        </div>
+        <ul id="server-entries"></ul>
+      </div>
+      <div class="lobby-details">
+        <div class="join-block">
+          <h3>Lobby</h3>
+          <p id="selected-server">No server selected</p>
+          <div class="ready-state">
+            <label class="toggle">
+              <input type="checkbox" id="ready-toggle" />
+              <span>Ready</span>
+            </label>
+            <span id="ready-status" class="chip">Not Ready</span>
+          </div>
+          <div class="team-select">
+            <label for="team-select">Team (cosmetic in FFA)</label>
+            <select id="team-select">
+              <option value="alpha">Alpha</option>
+              <option value="bravo">Bravo</option>
+              <option value="charlie">Charlie</option>
+              <option value="delta">Delta</option>
+            </select>
+          </div>
+          <button id="join-btn" type="button" disabled>Join Lobby</button>
+        </div>
+        <div class="ready-check">
+          <h4>Ready Check</h4>
+          <ol id="ready-list"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
