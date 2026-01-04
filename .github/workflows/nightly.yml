@@ -1,0 +1,36 @@
+name: Nightly Client/Server Build
+
+on:
+  schedule:
+    - cron: "0 5 * * *"  # 5:00 UTC nightly
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+      - name: Run tests
+        run: pytest
+      - name: Build client and dedicated server
+        run: python scripts/build_artifacts.py
+      - name: Package nightly zip
+        run: python scripts/package_release.py --channel nightly --version "0.1.0-nightly"
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-binaries
+          path: |
+            dist/**
+            releases/**
+            CHANGELOG.md
+            VERSION
