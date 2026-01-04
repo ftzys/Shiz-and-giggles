@@ -48,6 +48,31 @@ Use `scripts/package_release.py` after running `scripts/build_artifacts.py` to b
 
 ## Versioning and changelog
 The current version lives in `VERSION` and is mirrored in `shizgiggles.__init__.__version__`. Update `CHANGELOG.md` with user-facing notes for each release.
+
+## Playable client + dedicated server builds
+1. Install Godot 4.2+ and expose it as `godot` on your PATH or via `GODOT_BIN=/path/to/godot`.
+2. Build the binaries (Godot exports plus PyInstaller Python tools) into `dist/`:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -e .[dev]
+   python scripts/build_artifacts.py
+   ```
+   - Use `--skip-godot` if you only need the Python CLI builds; `--godot-bin /path/to/godot` overrides the Godot binary.
+3. Run the dedicated arena server export (auto-hosts on port `8910`):
+   ```bash
+   ./dist/godot/server/ShizAndGigglesServer.x86_64 --headless
+   ```
+4. Launch the playable client export and host/join a match from the main menu:
+   ```bash
+   ./dist/godot/client/ShizAndGiggles.x86_64
+   ```
+5. Package a release-ready zip (Godot builds, PyInstaller CLIs, changelog, and version metadata):
+   ```bash
+   python scripts/package_release.py --channel beta
+   ```
+   The archive is written to `releases/<version>-<channel>.zip` and is ready for itch.io/Steam uploads using the optional flags.
+
 # Performance Tuning Plan
 
 This document outlines the actionable steps to optimize frame timing, rendering, and networking for the target hardware, with special attention to worst-case 16-player chaos scenarios.

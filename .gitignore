@@ -5,3 +5,4 @@ build/
 dist/
 releases/
 .venv/
+node_modules/

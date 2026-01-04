@@ -30,6 +30,17 @@ class ReleasePackager:
     def validate_artifacts(self) -> None:
         if not DIST.exists():
             raise FileNotFoundError("dist directory missing. Run build_artifacts.py first.")
+        expected = [
+            DIST / "shiz-server",
+            DIST / "shiz-client",
+            DIST / "godot" / "client",
+            DIST / "godot" / "server",
+        ]
+        missing = [str(path) for path in expected if not path.exists()]
+        if missing:
+            raise FileNotFoundError(
+                f"Expected built artifacts were not found: {', '.join(missing)}. Run scripts/build_artifacts.py."
+            )
 
     def prepare_release_dir(self) -> None:
         if self.release_dir.exists():
