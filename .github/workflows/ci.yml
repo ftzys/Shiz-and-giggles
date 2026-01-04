@@ -1,0 +1,32 @@
+name: Build Godot Client and Server
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  export:
+    name: Export targets
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.2.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Export client (Linux/X11)
+        run: |
+          mkdir -p build/client
+          godot -v --headless --export-release "Linux/X11" build/client/NetReadyGodotStarter.x86_64
+
+      - name: Export dedicated server (Linux Server)
+        run: |
+          mkdir -p build/server
+          godot -v --headless --export-release "Linux Server" build/server/NetReadyGodotStarter_Server.x86_64
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-linux-builds
+          path: build/
