@@ -203,6 +203,7 @@ func _spawn_player(peer_id: int, nickname: String) -> void:
         player.network_manager = self
         _hud.set_health(player.health, player.max_health)
         _hud.set_status("You are %s — frag everything that moves." % nickname)
+        _hud.set_weapon("Pulse Rifle", 30, 120)
     spawn_player_remote.rpc(spawn, peer_id, nickname)
     _sync_scoreboard()
 
@@ -226,6 +227,7 @@ func spawn_player_remote(spawn: Vector3, peer_id: int, nickname: String) -> void
         player.network_manager = self
         _hud.set_health(player.health, player.max_health)
         _hud.set_status("Connected as %s" % nickname)
+        _hud.set_weapon("Pulse Rifle", 30, 120)
 
 func _choose_spawn_point() -> Vector3:
     if _spawn_points.is_empty():
