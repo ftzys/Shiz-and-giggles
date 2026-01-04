@@ -1,7 +1,7 @@
 # Shiz-and-Giggles
 
 <div align="center">
-  <img src="docs/assets/shiz-and-giggles-logo.svg" alt="Shiz-and-giggles logo" width="520" />
+  <img src="[docs/assets/shiz-and-giggles-logo.svg](https://cdn.discordapp.com/attachments/618971960092786699/1457258036694351872/shiz.png?ex=695b58ce&is=695a074e&hm=163534c577bc028154801f197744bd05e02f4d1eacd4caa6713a49625e8229df&)" alt="Shiz-and-giggles logo" width="520" />
   <p><strong>A cartoony arena shooter</strong> · <em>Built for big laughs and fast rounds</em></p>
 </div>
 
