@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
-node_modules/
+*.spec
+build/
+dist/
+releases/
+.venv/
