@@ -1,19 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" role="img" aria-label="Shiz-and-giggles logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" role="img" aria-label="Shiz-and-giggles playful logo">
   <defs>
-    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#ff7d4d"/>
-      <stop offset="50%" stop-color="#ffdc60"/>
-      <stop offset="100%" stop-color="#56d2ff"/>
+    <linearGradient id="sunrise" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb347" />
+      <stop offset="50%" stop-color="#ff77a9" />
+      <stop offset="100%" stop-color="#8dd9ff" />
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="10" stdDeviation="20" flood-color="#0e0e14" flood-opacity="0.6"/>
+    <linearGradient id="bubble" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7cf6d8" />
+      <stop offset="100%" stop-color="#50a0ff" />
+    </linearGradient>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0d1020" flood-opacity="0.35" />
     </filter>
   </defs>
-  <rect width="960" height="320" rx="28" fill="#0e0e14"/>
-  <g filter="url(#shadow)">
-    <path d="M210 240c-70 0-110-33-110-78 0-42 33-62 71-74l66-20c19-6 28-13 28-26 0-17-16-27-40-27-28 0-51 12-66 36l-59-34c25-46 74-75 134-75 78 0 126 39 126 100 0 46-30 73-86 90l-53 16c-20 6-30 13-30 26 0 15 15 25 38 25 26 0 48-11 62-32l58 35c-27 43-74 68-139 68Z" fill="url(#glow)"/>
-    <path d="M540 70v60h122v70H540v70h-90V0h222v70H540Z" fill="#ffffff"/>
-    <path d="M735 0h90v90l87-90h104l-104 103 109 157H820l-49-78-31 31v47h-90V0Z" fill="#ffffff"/>
+
+  <rect width="960" height="320" rx="32" fill="url(#sunrise)" />
+  <g filter="url(#soft-shadow)">
+    <rect x="28" y="36" width="904" height="248" rx="36" fill="#0c1026" opacity="0.85" />
   </g>
-  <text x="480" y="286" text-anchor="middle" fill="#9da7be" font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="32" letter-spacing="4">FAST-PACED ARENA SHOOTER</text>
+
+  <g filter="url(#soft-shadow)">
+    <path d="M130 212c-32 0-58-20-58-53 0-27 16-43 44-51l48-13c10-3 14-7 14-14 0-10-10-16-25-16-17 0-33 8-42 20l-40-24c16-29 46-48 87-48 50 0 83 25 83 67 0 31-18 51-55 62l-39 11c-12 3-17 7-17 15 0 9 9 15 23 15 15 0 29-7 38-17l40 24c-17 26-45 42-81 42Z" fill="#ffd76d" />
+    <path d="M313 222c-53 0-90-34-90-83s37-83 90-83c34 0 58 13 74 38l-52 31c-5-8-12-12-22-12-13 0-23 10-23 26 0 16 10 26 23 26 9 0 17-4 22-12l52 31c-16 25-40 38-74 38Z" fill="#ff8bb8" />
+    <path d="M520 72h-66v53h60v56h-60v53h66v54h-122V18h122v54Z" fill="#7cf6d8" />
+    <path d="M625 222c-52 0-88-34-88-83s36-83 88-83 88 34 88 83-36 83-88 83Zm0-54c14 0 25-11 25-29s-11-29-25-29-25 11-25 29 11 29 25 29Z" fill="#5fc0ff" />
+    <path d="M757 56h64v81l68-81h77l-81 90 83 120h-80l-39-60-28 30v30h-64V56Z" fill="#ffd76d" />
+  </g>
+
+  <g fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
+    <circle cx="186" cy="106" r="12" />
+    <circle cx="280" cy="196" r="10" />
+    <circle cx="418" cy="86" r="11" />
+    <circle cx="612" cy="108" r="10" />
+    <circle cx="768" cy="208" r="12" />
+    <path d="M140 248c10 12 24 20 46 24" />
+    <path d="M802 92c8 8 14 20 14 32" />
+  </g>
+
+  <rect x="290" y="236" width="380" height="64" rx="26" fill="url(#bubble)" filter="url(#soft-shadow)" />
+  <text x="480" y="278" text-anchor="middle" fill="#0c1026" font-family="'Baloo 2', 'Fredoka One', 'Comic Sans MS', system-ui" font-size="28" letter-spacing="2">FAST, SILLY ARENA BLASTS FOR FRIENDS</text>
 </svg>
