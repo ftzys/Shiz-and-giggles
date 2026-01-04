@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "shizgiggles"
 version = "0.1.0-nightly"
-description = "Lightweight client/server simulation for Shits and Giggles"
-authors = [{name = "Shits and Giggles Team"}]
+description = "Lightweight client/server simulation for Shiz-and-giggles"
+authors = [{name = "Shiz-and-giggles Team"}]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []

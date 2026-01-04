@@ -1,4 +1,4 @@
-"""Core package for Shits and Giggles simulation."""
+"""Core package for Shiz-and-giggles simulation."""
 
 __all__ = [
     "__version__",
