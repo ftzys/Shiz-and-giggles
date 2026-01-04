@@ -10,7 +10,7 @@ from server.metrics import Metrics
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Shits-and-giggles dedicated server")
+    parser = argparse.ArgumentParser(description="Shiz-and-giggles dedicated server")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     server_parser = subparsers.add_parser("server", help="Run the dedicated server")
