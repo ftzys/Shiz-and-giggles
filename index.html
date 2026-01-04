@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="hud">
+  <div id="hud" class="view-layer">
     <div class="hud-row">
       <div class="stat-panel">
         <div class="label">Health</div>
@@ -55,10 +55,15 @@
     </div>
   </div>
 
-  <div id="crosshair">
+  <div id="crosshair" class="view-layer">
     <div class="line vertical"></div>
     <div class="line horizontal"></div>
   </div>
+
+  <div id="vfx-layer" class="view-layer" aria-hidden="true"></div>
+  <div id="hit-marker" class="view-layer" aria-hidden="true"></div>
+  <div id="kill-banner" class="view-layer" role="status" aria-live="polite"></div>
+  <div id="announcer-callout" class="view-layer" role="status" aria-live="polite"></div>
 
   <div id="pause-menu" class="hidden" role="dialog" aria-modal="true">
     <div class="pause-header">
