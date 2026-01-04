@@ -4,11 +4,17 @@
   --accent: #58a6ff;
   --health: #ff6b6b;
   --armor: #6bc2ff;
+  --hit: #f0e68c;
+  --kill: #9cff90;
   --text: #e6edf3;
   --muted: #8b949e;
   --border: #30363d;
   --success: #3fb950;
   --warn: #d29922;
+  --view-x: 0px;
+  --view-y: 0px;
+  --view-tilt: 0deg;
+  --fov-scale: 1;
 }
 
 * {
@@ -179,6 +185,13 @@ body {
   z-index: 1;
 }
 
+.view-layer {
+  transform: translate(var(--view-x), var(--view-y)) scale(var(--fov-scale)) rotate(var(--view-tilt));
+  transform-origin: center;
+  transition: transform 0.1s ease;
+  will-change: transform;
+}
+
 #crosshair .line {
   position: absolute;
   background: #ffffffaa;
@@ -193,6 +206,112 @@ body {
 #crosshair .horizontal {
   height: 2px;
   width: 24px;
+}
+
+#vfx-layer,
+#hit-marker,
+#kill-banner,
+#announcer-callout {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#hit-marker {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+#hit-marker.active {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+#hit-marker::before,
+#hit-marker::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--hit);
+  border-radius: 6px;
+  box-shadow: 0 0 18px rgba(240, 230, 140, 0.6);
+  transform: rotate(45deg);
+}
+
+#kill-banner,
+#announcer-callout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0d1117;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+}
+
+#kill-banner.active {
+  animation: killBanner 0.8s ease;
+  background: radial-gradient(circle, rgba(156, 255, 144, 0.35), transparent 55%);
+}
+
+#announcer-callout.active {
+  animation: announcer 1s ease;
+  background: radial-gradient(circle, rgba(88, 166, 255, 0.18), transparent 60%);
+  color: #e6edf3;
+}
+
+.muzzle-flash {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 213, 94, 0.9), rgba(255, 132, 0, 0.5), transparent 65%);
+  filter: blur(2px);
+  border-radius: 50%;
+  animation: muzzleFlash 0.2s ease forwards;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.muzzle-flash.rocket {
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(255, 180, 130, 0.9), rgba(255, 80, 35, 0.6), transparent 70%);
+}
+
+.tracer {
+  position: absolute;
+  width: 2px;
+  height: 280px;
+  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0));
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.65);
+  transform-origin: top center;
+  animation: tracerFly 0.24s ease-out forwards;
+  opacity: 0.9;
+}
+
+.impact {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), rgba(255, 140, 0, 0.6), transparent 70%);
+  animation: impactFade 0.6s ease-out forwards;
+}
+
+.rocket-trail {
+  position: absolute;
+  width: 8px;
+  height: 320px;
+  background: linear-gradient(180deg, rgba(255, 211, 140, 0.8), rgba(255, 96, 60, 0.05));
+  filter: blur(0.5px);
+  box-shadow: 0 0 18px rgba(255, 120, 70, 0.65);
+  transform-origin: top center;
+  animation: rocketTrail 0.5s ease-out forwards;
 }
 
 #pause-menu {
@@ -400,6 +519,80 @@ button:disabled {
 button:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 10px 30px rgba(88, 166, 255, 0.35);
+}
+
+@keyframes muzzleFlash {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes tracerFly {
+  from {
+    opacity: 1;
+    transform: scaleY(0.1);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(1) translateY(-20px);
+  }
+}
+
+@keyframes rocketTrail {
+  from {
+    opacity: 1;
+    transform: scaleY(0.2);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(1) translateY(-30px);
+  }
+}
+
+@keyframes impactFade {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes killBanner {
+  0% {
+    transform: translateY(-20px) scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(0) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+}
+
+@keyframes announcer {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
 }
 
 @media (max-width: 960px) {
