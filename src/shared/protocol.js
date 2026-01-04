@@ -31,7 +31,8 @@ function budgetedSnapshotRate({ playerCount = MAX_PLAYERS, bandwidthKbps = 256, 
 }
 
 function clamp01(value) {
-  return Math.min(1, Math.max(0, value));
+  const numeric = Number.isFinite(value) ? value : 0;
+  return Math.min(1, Math.max(0, numeric));
 }
 
 function directionFromInput(input) {

@@ -3,9 +3,10 @@ const {
   MESSAGE_TYPES,
   DEFAULT_TICK_RATE,
   DEFAULT_SNAPSHOT_RATE,
-  MAX_HISTORY_MS,
-  directionFromInput
+  MAX_HISTORY_MS
 } = require("../shared/protocol");
+const { integrateMovement } = require("../shared/movement");
+const { loadMovementConfig } = require("../shared/movementConfig");
 
 class RemotePlayerBuffer {
   constructor(bufferMs = 100) {
@@ -32,7 +33,8 @@ class RemotePlayerBuffer {
           timestamp: renderTime,
           position: {
             x: current.position.x + (next.position.x - current.position.x) * t,
-            y: current.position.y + (next.position.y - current.position.y) * t
+            y: current.position.y + (next.position.y - current.position.y) * t,
+            z: current.position.z + (next.position.z - current.position.z) * t
           },
           velocity: next.velocity,
           id: current.id
@@ -48,15 +50,17 @@ class GameClient {
     url = "ws://localhost:3001",
     tickRate = DEFAULT_TICK_RATE,
     snapshotRate = DEFAULT_SNAPSHOT_RATE,
-    interpolationBufferMs = 100
+    interpolationBufferMs = 100,
+    movementConfigPath
   } = {}) {
     this.url = url;
     this.socket = null;
     this.playerId = null;
     this.localState = {
-      position: { x: 0, y: 0 },
-      velocity: { x: 0, y: 0 },
-      score: 0
+      position: { x: 0, y: 0, z: 0 },
+      velocity: { x: 0, y: 0, z: 0 },
+      score: 0,
+      onGround: true
     };
     this.remotePlayers = new Map();
     this.pendingInputs = [];
@@ -65,6 +69,7 @@ class GameClient {
     this.snapshotRate = snapshotRate;
     this.interpolationBufferMs = interpolationBufferMs;
     this.latencyMs = 0;
+    this.movementConfig = loadMovementConfig(movementConfigPath);
   }
 
   connect() {
@@ -101,13 +106,7 @@ class GameClient {
   }
 
   _applyPrediction(input, dt) {
-    const direction = directionFromInput(input);
-    const speed = input.speed || 8;
-    this.localState.velocity.x = direction.x * speed;
-    this.localState.velocity.y = direction.y * speed;
-    const delta = dt / 1000;
-    this.localState.position.x += this.localState.velocity.x * delta;
-    this.localState.position.y += this.localState.velocity.y * delta;
+    this.localState = integrateMovement(this.localState, input, dt, this.movementConfig);
   }
 
   _handleMessage(raw) {
@@ -120,6 +119,9 @@ class GameClient {
     switch (message.type) {
       case MESSAGE_TYPES.HANDSHAKE:
         this.playerId = message.id;
+        if (message.movementConfig) {
+          this.movementConfig = { ...this.movementConfig, ...message.movementConfig };
+        }
         break;
       case MESSAGE_TYPES.SNAPSHOT:
         this._ingestSnapshot(message);
@@ -149,7 +151,8 @@ class GameClient {
           id: player.id,
           timestamp: snapshot.at,
           position: player.position,
-          velocity: player.velocity
+          velocity: player.velocity,
+          onGround: player.onGround
         });
       }
     });
@@ -165,6 +168,7 @@ class GameClient {
     this.localState.position = authoritative.position;
     this.localState.velocity = authoritative.velocity;
     this.localState.score = authoritative.score;
+    this.localState.onGround = authoritative.onGround;
     this.pendingInputs = this.pendingInputs.filter((input) => input.sequence > authoritative.lastAck);
     this.pendingInputs.forEach((input) => this._applyPrediction(input.input, input.dt));
   }

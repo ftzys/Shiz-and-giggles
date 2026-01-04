@@ -1,0 +1,13 @@
+{
+  "maxSpeed": 320,
+  "groundAcceleration": 10,
+  "airAcceleration": 15,
+  "airControl": 2.5,
+  "friction": 6,
+  "stopSpeed": 100,
+  "gravity": 20,
+  "jumpSpeed": 8,
+  "bunnyhop": true,
+  "sideStrafeAccel": 50,
+  "sideStrafeSpeed": 30
+}
