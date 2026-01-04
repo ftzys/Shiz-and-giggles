@@ -78,6 +78,14 @@ You’ll find the current version in `VERSION` and mirrored in `shizgiggles.__in
    ```
    The archive lands in `releases/<version>-<channel>.zip` and is ready for itch.io/Steam uploads using the optional flags.
 
+## Discord-ready portable zip (no Python or tools required)
+Bundle everything needed to share the game as a single download (usable directly after extracting, no GitHub access or Python installs required):
+```bash
+python scripts/build_portable_bundle.py --name shiz-and-giggles-discord
+```
+- The script rebuilds one-file PyInstaller CLIs and Godot exports, then writes a zip in `portable/` with runnable binaries plus a quickstart README.
+- Use `--skip-build` if you already have fresh artifacts in `dist/`, `--skip-godot` to ship only the CLIs, or `--omit-tools` to exclude the Python helpers.
+
 ## Windows `.exe` releases via GitHub
 - Push a tag like `v0.2.0` or trigger the **Windows Release Build** workflow manually.
 - The workflow makes one-file PyInstaller executables for `shiz-client` and `shiz-server`, bundles them with the changelog and version metadata, and uploads the zip to a GitHub Release when a tag is present.
