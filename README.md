@@ -78,6 +78,11 @@ The current version lives in `VERSION` and is mirrored in `shizgiggles.__init__.
    ```
    The archive is written to `releases/<version>-<channel>.zip` and is ready for itch.io/Steam uploads using the optional flags.
 
+## Windows `.exe` releases via GitHub
+- Push a tag following the pattern `v*` (e.g., `v0.2.0`) or trigger the **Windows Release Build** workflow manually from the Actions tab.
+- The workflow builds one-file PyInstaller executables for `shiz-client` and `shiz-server` on `windows-latest`, packages them with the changelog/version metadata, and uploads the zip to a GitHub Release when a tag is present.
+- Manual runs without a tag still produce downloadable artifacts; grab them from the workflow run’s artifacts list.
+
 # Performance Tuning Plan
 
 This document outlines the actionable steps to optimize frame timing, rendering, and networking for the target hardware, with special attention to worst-case 16-player chaos scenarios.

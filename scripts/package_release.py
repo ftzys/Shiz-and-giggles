@@ -7,7 +7,6 @@ import pathlib
 import shutil
 import subprocess
 import sys
-from typing import List
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
@@ -17,29 +16,48 @@ VERSION_FILE = ROOT / "VERSION"
 
 
 class ReleasePackager:
-    def __init__(self, channel: str, version: str | None = None) -> None:
+    def __init__(self, channel: str, version: str | None = None, require_godot: bool = True) -> None:
         self.channel = channel
         self.version = version or self._derive_version()
         self.release_dir = RELEASES / f"{self.version}-{self.channel}"
+        self.require_godot = require_godot
 
     def _derive_version(self) -> str:
         if VERSION_FILE.exists():
             return VERSION_FILE.read_text().strip()
         return datetime.datetime.utcnow().strftime("0.1.%Y%m%d%H%M")
 
+    def _expected_artifacts(self) -> list[pathlib.Path]:
+        expected: list[pathlib.Path] = [
+            DIST / "shiz-server",
+            DIST / "shiz-client",
+        ]
+        if self.require_godot:
+            expected.extend(
+                [
+                    DIST / "godot" / "client",
+                    DIST / "godot" / "server",
+                ]
+            )
+        return expected
+
     def validate_artifacts(self) -> None:
         if not DIST.exists():
             raise FileNotFoundError("dist directory missing. Run build_artifacts.py first.")
-        expected = [
-            DIST / "shiz-server",
-            DIST / "shiz-client",
-            DIST / "godot" / "client",
-            DIST / "godot" / "server",
-        ]
-        missing = [str(path) for path in expected if not path.exists()]
-        if missing:
+        missing = []
+        for path in self._expected_artifacts():
+            if path.exists():
+                continue
+            alt = list(DIST.glob(f"{path.name}*"))
+            if not alt:
+                missing.append(str(path))
+        if missing and self.require_godot:
             raise FileNotFoundError(
                 f"Expected built artifacts were not found: {', '.join(missing)}. Run scripts/build_artifacts.py."
+            )
+        if missing:
+            raise FileNotFoundError(
+                f"Expected built artifacts were not found: {', '.join(missing)}. Run scripts/build_artifacts.py with matching flags."
             )
 
     def prepare_release_dir(self) -> None:
@@ -83,11 +101,16 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Package artifacts for itch/Steam beta distribution")
     parser.add_argument("--channel", default="beta")
     parser.add_argument("--version")
+    parser.add_argument(
+        "--skip-godot",
+        action="store_true",
+        help="Allow packaging even when Godot exports are missing (useful for platform-specific PyInstaller-only builds).",
+    )
     parser.add_argument("--itch-target", help="butler target e.g. user/game:channel", default=None)
     parser.add_argument("--steam-script", type=pathlib.Path, help="Path to Steam app build script", default=None)
     args = parser.parse_args()
 
-    packager = ReleasePackager(channel=args.channel, version=args.version)
+    packager = ReleasePackager(channel=args.channel, version=args.version, require_godot=not args.skip_godot)
     packager.validate_artifacts()
     packager.prepare_release_dir()
     zip_path = packager.zip_release()
