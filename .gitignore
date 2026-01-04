@@ -1,13 +1,7 @@
-# Godot 4 project ignores
-.export/
-.import/
-.godot/
-mono_crash.*
-*.translation
-# Swap and backup files
-*.tmp
-*.temp
-*~
-# OS metadata
-.DS_Store
-Thumbs.db
+__pycache__/
+*.pyc
+*.spec
+build/
+dist/
+releases/
+.venv/
