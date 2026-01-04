@@ -1,7 +1,7 @@
-# Shiz and Giggles Arena Concepts
+# Shits and Giggles Arena Concepts
 
 This repository documents arena layouts and implementation guidance for fast-paced combat spaces. See `docs/arena_specs.md` for two ready-to-build arenas with item placement, lighting profiles, and navigation mesh notes.
-# Shiz and Giggles HUD Prototype
+# Shits and Giggles HUD Prototype
 
 Static prototype showcasing a game HUD, pause/settings menu, and lobby flow.
 
@@ -12,7 +12,7 @@ Static prototype showcasing a game HUD, pause/settings menu, and lobby flow.
 
 ## Usage
 Open `index.html` in a modern browser. Use `Esc` to toggle the pause menu; refresh servers and join to simulate lobby readiness.
-# Shiz and Giggles Build + Test Harness
+# Shits and Giggles Build + Test Harness
 
 This repository provides a lightweight Python client/server simulation, nightly build pipeline, regression tests for player movement and weapon handling, and load-test tooling suitable for smoke-testing a dedicated server with 16+ synthetic clients.
 
@@ -83,7 +83,7 @@ This document outlines the actionable steps to optimize frame timing, rendering,
 - [ ] Enable GPU instancing for repeatable props; ensure material compatibility.
 - [ ] Introduce pooled VFX and pre-warm heavy effects.
 - [ ] Instrument and tune network update rates, packet sizes, and relevancy rules during 16-player chaos tests.
-Shiz & Giggles is a fast-paced, Quake-inspired arena shooter. This guide covers how to host and join matches, the default controls, and best practices for configuring servers and contributing new content while preserving the game's classic feel.
+Shits & Giggles is a fast-paced, Quake-inspired arena shooter. This guide covers how to host and join matches, the default controls, and best practices for configuring servers and contributing new content while preserving the game's classic feel.
 
 ## Quickstart
 

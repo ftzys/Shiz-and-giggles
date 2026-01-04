@@ -89,7 +89,7 @@ async def run_server(host: str, port: int) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run Shiz and Giggles dedicated server")
+    parser = argparse.ArgumentParser(description="Run Shits and Giggles dedicated server")
     parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--log-level", default="INFO")
