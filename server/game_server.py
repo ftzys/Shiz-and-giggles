@@ -113,6 +113,7 @@ class GameServer:
             self.metrics.increment("connections_rejected_full")
             return
 
+        player_id: Optional[str] = None
         try:
             join_message = await reader.readline()
             if not self.anti_cheat.validate_message_size(join_message):
@@ -165,7 +166,8 @@ class GameServer:
                     continue
                 await self._process_message(session, message)
         finally:
-            self.state.players.pop(client_id, None)
+            if player_id:
+                self.state.players.pop(player_id, None)
             writer.close()
             await writer.wait_closed()
             self.metrics.increment("connections_closed")
