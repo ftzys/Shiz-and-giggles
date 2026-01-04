@@ -1,0 +1,1 @@
+"""Lightweight combat simulation toolkit."""
