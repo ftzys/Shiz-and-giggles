@@ -6,13 +6,13 @@ const {
   DEFAULT_SNAPSHOT_RATE,
   MAX_HISTORY_MS,
   MAX_PLAYERS,
-  budgetedSnapshotRate,
-  directionFromInput
+  budgetedSnapshotRate
 } = require("../shared/protocol");
+const { integrateMovement } = require("../shared/movement");
+const { loadMovementConfig } = require("../shared/movementConfig");
 
 const DEFAULT_PORT = process.env.PORT || 3001;
 const HISTORY_LIMIT = 128;
-const DEFAULT_MOVE_SPEED = 8;
 const DEFAULT_FIRE_RANGE = 50;
 
 function distanceSquared(a, b) {
@@ -28,6 +28,7 @@ function cloneState(state) {
     velocity: { ...state.velocity },
     score: state.score,
     health: state.health,
+    onGround: state.onGround,
     lastProcessedInput: state.lastProcessedInput,
     lastAck: state.lastAck,
     lastSeen: state.lastSeen
@@ -37,8 +38,9 @@ function cloneState(state) {
 class PlayerState {
   constructor(id) {
     this.id = id;
-    this.position = { x: 0, y: 0 };
-    this.velocity = { x: 0, y: 0 };
+    this.position = { x: 0, y: 0, z: 0 };
+    this.velocity = { x: 0, y: 0, z: 0 };
+    this.onGround = true;
     this.score = 0;
     this.health = 100;
     this.lastProcessedInput = 0;
@@ -52,7 +54,8 @@ class Simulation {
     tickRate = DEFAULT_TICK_RATE,
     desiredSnapshotRate = DEFAULT_SNAPSHOT_RATE,
     bandwidthKbps = 256,
-    port = DEFAULT_PORT
+    port = DEFAULT_PORT,
+    movementConfigPath
   } = {}) {
     this.tickRate = tickRate;
     this.tickMs = 1000 / tickRate;
@@ -69,6 +72,7 @@ class Simulation {
     this.server = new WebSocketServer({ port });
     this.lastSnapshotAt = 0;
     this.lastBandwidthAudit = 0;
+    this.movementConfig = loadMovementConfig(movementConfigPath);
     this._bootstrap();
   }
 
@@ -78,7 +82,7 @@ class Simulation {
       const player = new PlayerState(id);
       this.players.set(id, player);
       socket.__id = id;
-      socket.send(JSON.stringify({ type: MESSAGE_TYPES.HANDSHAKE, id }));
+      socket.send(JSON.stringify({ type: MESSAGE_TYPES.HANDSHAKE, id, movementConfig: this.movementConfig }));
       socket.on("message", (raw) => this._onMessage(id, raw));
       socket.on("close", () => this._removePlayer(id));
       socket.on("error", () => this._removePlayer(id));
@@ -126,12 +130,11 @@ class Simulation {
   _applyInput(player, payload) {
     if (payload.sequence <= player.lastProcessedInput) return;
     player.lastProcessedInput = payload.sequence;
-    const direction = directionFromInput(payload.input);
-    const delta = (payload.dt || 0) / 1000;
-    player.velocity.x = direction.x * DEFAULT_MOVE_SPEED;
-    player.velocity.y = direction.y * DEFAULT_MOVE_SPEED;
-    player.position.x += player.velocity.x * delta;
-    player.position.y += player.velocity.y * delta;
+    const dtMs = payload.dt || this.tickMs;
+    const next = integrateMovement(player, payload.input || {}, dtMs, this.movementConfig);
+    player.position = next.position;
+    player.velocity = next.velocity;
+    player.onGround = next.onGround;
     if (payload.input.pickup) {
       this._handlePickup(player);
     }
@@ -221,6 +224,7 @@ class Simulation {
         id,
         position: state.position,
         velocity: state.velocity,
+        onGround: state.onGround,
         score: state.score,
         health: state.health,
         lastAck: state.lastAck
