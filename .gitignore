@@ -4,5 +4,6 @@ __pycache__/
 build/
 dist/
 releases/
+portable/
 .venv/
 node_modules/
