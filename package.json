@@ -1,0 +1,20 @@
+{
+  "name": "shiz-and-giggles-netcode",
+  "version": "0.1.0",
+  "description": "Authoritative server and client prediction scaffolding for a 16-player session.",
+  "main": "src/server/index.js",
+  "scripts": {
+    "server": "node src/server/index.js",
+    "client": "node src/client/index.js",
+    "lint": "node --check src/server/index.js src/client/index.js src/shared/protocol.js",
+    "start": "npm run server"
+  },
+  "dependencies": {
+    "uuid": "^9.0.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18"
+  }
+}
